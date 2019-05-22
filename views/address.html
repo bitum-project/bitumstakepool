@@ -1,0 +1,190 @@
+{{define "address"}}
+<section class="site-content">
+		<div class="container container--narrow">
+			<div class="row mx-3">
+				{{if .User.MultiSigAddress}}
+          <section class="block">
+              <div class="col-12 block__title">
+                <div class="d-sm-flex d-none justify-content-between align-items-center">
+                  <h1><span>Connected to Wallet</span> <img src="assets/images/wallet-icon.svg" alt=""></h1>
+                  <img class="icon--info" src="assets/images/info-icon.svg" data-toggle="modal" data-target="#connectSubAddress" alt="">
+                </div>
+                <div class="d-flex d-sm-none justify-content-between align-items-start">
+                  <h1><img src="assets/images/wallet-icon.svg" alt=""> <span>Connected to Wallet</span></h1>
+                  <img class="icon--info" src="assets/images/info-icon.svg" data-toggle="modal" data-target="#connectSubAddress" alt="">
+                </div>
+              </div>
+
+            <div class="modal fade" id="connectSubAddress" tabindex="-1" role="dialog" aria-labelledby="connectSubAddressTitle" aria-hidden="true">
+              <div class="container container--narrow modal-dialog px-0" role="document">
+                <div class="modal-content px-md-3 py-md-4">
+                  <div class="modal-header d-md-flex d-none">
+                    <h1 class="modal-title d-flex justify-content-between align-items-center" id="connectSubAddressTitle"><img src="assets/images/info-icon-lg.svg" alt=""> <span class="px-3">Submitted Address</span></h1>
+                    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true"><img src="assets/images/close-cross-icon.svg" alt=""></span>
+                    </button>
+                  </div>
+                  <div class="modal-header d-md-none d-block mb-3 p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/arrow-back--blue.svg" alt=""></span>
+                      </button>
+                      <h1 class="modal-title" id="connectSubAddressTitle"><img src="assets/images/info-icon-sm.svg" alt=""> <span class="pl-1">Submitted Address</span></h1>
+                    </div>
+                  </div>
+                  <div class="modal-body mx-3 px-sm-5 px-0">
+                    <p>When you submit an address, the VSP binds that address from your wallet together with an address from the VSP’s voting wallet. This is done by creating a 1-of-2 multisignature script which lets you, the VSP, or both parties vote. This “binding” of the wallets means that if you ever delete your current wallet and create a new wallet with a different seed, importing your multisignature script will not work because it contains an address that is not present in your new wallet.</p>
+
+                    <p>If you wish to verify that this address belongs to your wallet, you may run the following command:</p>
+
+                    <div class="modal-code">
+                      <pre>$ bitumctl {{ if eq .Network "testnet"}}--testnet{{end}} --wallet validateaddress {{ .User.UserPubKeyAddr }}</pre>
+                    </div>
+
+                    <p>In the result, you will see fields such as “ismine” and “account” if the address is present.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 block__description--white">
+              <p>Your public key address has been accepted and registration is complete. Please, contact your VSP administrator or support staff if you need to re-register with a new address from a new wallet.</p>
+            </div>
+            <div class="col-12 mb-5 block__key">
+              <h2>Public Key Address</h2>
+              <p>{{ .User.UserPubKeyAddr }}</p>
+            </div>
+          </section>
+						
+				{{ else }}
+				<section class="block">
+						<div class="col-12 block__title">
+							<h1 class="d-flex justify-content-between align-items-center"><span>Connect via API Key</span> <img class="icon--info" src="assets/images/info-icon.svg" data-toggle="modal" data-target="#connectApiKey" alt=""></h1>
+						</div>
+
+						<div class="modal fade" id="connectApiKey" tabindex="-1" role="dialog" aria-labelledby="connectApiKeyTitle" aria-hidden="true">
+							<div class="container container--narrow modal-dialog px-0" role="document">
+								<div class="modal-content px-md-3 py-md-4">
+									<div class="modal-header d-md-flex d-none">
+										<h1 class="modal-title d-flex justify-content-between align-items-center" id="connectApiKeyTitle"><img src="assets/images/info-icon-lg.svg" alt=""> <span class="px-3">Connect via API Key</span></h1>
+										<button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true"><img src="assets/images/close-cross-icon.svg" alt=""></span>
+										</button>
+									</div>
+									<div class="modal-header d-md-none d-block mb-3 p-4">
+										<div class="d-flex justify-content-between align-items-center">
+											<button type="button" data-dismiss="modal" aria-label="Close" class="modal-close">
+												<span aria-hidden="true"><img src="assets/images/arrow-back--blue.svg" alt=""></span>
+											</button>
+											<h1 class="modal-title" id="connectApiKeyTitle"><img src="assets/images/info-icon-sm.svg" alt=""> <span class="pl-1">Connect via API Key</span></h1>
+										</div>
+									</div>
+									<div class="modal-body mx-3 px-sm-5 px-0">
+										<p>The official Bitum GUI wallet Bitumiton is the recommended way to use VSPs. All you need to get started is to copy and paste the API Token below when prompted. More comprehensive guides are available for Bitumiton as well a general overview of the staking process.</p>
+
+										<strong>Submit your API key</strong>
+
+										<img src="assets/images/code-example@2x.png" class="img-fluid">
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-12 block__description">
+							<p>To connect the VSP to your wallet, copy and paste this API key to Bitumiton.</p>
+						</div>
+
+						<div class="col-12 mb-5 block__key">
+							<p>{{ $.APIToken }}</p>
+						</div>
+
+					</section>
+				
+  				<section class="block">
+						<div class="col-12 block__title">
+							<h1 class="d-flex justify-content-between align-items-center"><span>Connect Manually</span> <img class="icon--info" src="assets/images/info-icon.svg" data-toggle="modal" data-target="#connectManually" alt=""></h1>
+						</div>
+
+					<div class="modal fade" id="connectManually" tabindex="-1" role="dialog" aria-labelledby="connectManuallyTitle" aria-hidden="true">
+						<div class="container container--narrow modal-dialog px-0" role="document">
+							<div class="modal-content px-md-3 py-md-4">
+								<div class="modal-header d-md-flex d-none">
+									<h1 class="modal-title d-flex justify-content-between align-items-center" id="connectManuallyTitle"><img src="assets/images/info-icon-lg.svg" alt=""> <span class="px-3">Connect Manually</span></h1>
+									<button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true"><img src="assets/images/close-cross-icon.svg" alt=""></span>
+									</button>
+								</div>
+								<div class="modal-header d-md-none d-block mb-3 p-4">
+									<div class="d-flex justify-content-between align-items-center">
+										<button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true"><img src="assets/images/arrow-back--blue.svg" alt=""></span>
+										</button>
+										<h1 class="modal-title" id="connectManuallyTitle"><img src="assets/images/info-icon-sm.svg" alt=""> <span class="pl-1">Connect Manually</span></h1>
+									</div>
+								</div>
+								<div class="modal-body mx-3 px-sm-5 px-0">
+									<p>To join the voting service, provide a public key
+									address which will be used to generate a 1-of-2 multisignature script.
+									The multisignature script will be generated by the service and returned to you
+									along with a P2SH address to give voting rights to. The P2SH address has the
+									prefix
+									<b>{{ if eq .Network "mainnet"}}D{{end}}{{ if eq .Network "testnet"}}T{{end}}c</b>.</p>
+
+									<p>To generate a public key address, create
+									a new wallet address with <b>getnewaddress</b>. Then,
+									call <b>validateaddress &lt;yourAddress&gt;</b> and retrieve the address
+									listed in the <b>pubkeyaddr</b> field of the response. The <b>pubkeyaddr</b>
+									starts with
+									<b>{{ if eq .Network "mainnet"}}D{{end}}{{ if eq .Network "testnet"}}T{{end}}k</b>.</p>
+
+									<p>The following is an example:</p>
+
+<div class="modal-code"><pre>$ bitumctl {{ if eq .Network "testnet"}}--testnet{{end}} --wallet getnewaddress
+{{ if eq .Network "mainnet"}}D{{end}}{{ if eq .Network "testnet"}}T{{end}}sExampleAddr1For2Demo3PurposesOnly
+$ bitumctl {{ if eq .Network "testnet"}}--testnet{{end}} --wallet validateaddress {{ if eq .Network "mainnet"}}D{{end}}{{ if eq .Network "testnet"}}T{{end}}sExampleAddr1For2Demo3PurposesOnly
+{
+  "isvalid": true,
+  "address": "{{ if eq .Network "mainnet"}}D{{end}}{{ if eq .Network "testnet"}}T{{end}}sExampleAddr1For2Demo3PurposesOnly",
+  "ismine": true,
+  <b>"pubkeyaddr": "{{ if eq .Network "mainnet"}}D{{end}}{{ if eq .Network "testnet"}}T{{end}}kExample0Addr1For2Demo4Purposes5Only6Do7Not8Use9Pls0"</b>,
+  "pubkey": "022801337beefc0ffee1dab8d4ffa898a782466c9a1fc00ca8863de5438dc07dcc",
+  "iscompressed": true,
+  "account": "default"
+}</pre></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+						<div class="col-12 block__description">
+							<p>To connect manually using the command-line tools, copy and paste <strong>pubkeyaddr</strong> that start’s with  <b>{{ if eq .Network "mainnet"}}D{{end}}{{ if eq .Network "testnet"}}T{{end}}k</b> into the form below.</p>
+						</div>
+
+						{{range .Flash}}
+							<div class="snackbar snackbar-error">
+								<div class="snackbar-message">
+									<p>{{.}}</p>
+								</div>
+							</div>
+						{{end}}
+
+						<form class="w-100 form" method="post">
+							<div class="col-12 mb-4">
+								<div class="form-group row mb-0 align-items-center">
+								<label for="inputAddress" class="col-md-3">Public Key Address:</label>
+								<div class="col-md-9">
+									<input type="text" class="form-control" name="UserPubKeyAddr" id="inputAddress" placeholder="Enter address">
+								</div>
+							</div>
+							</div>
+							{{ $.csrfField }}
+							<input type="submit" class="btn mb-2" value="Submit Address">
+						</form>
+  				</section>
+					{{end}}
+
+			</div>
+		</div>
+
+</section>
+{{end}}

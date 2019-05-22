@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package stakepoolrpc;
+
+service StakepooldService {
+	rpc GetAddedLowFeeTickets (GetAddedLowFeeTicketsRequest) returns (GetAddedLowFeeTicketsResponse);
+	rpc GetIgnoredLowFeeTickets (GetIgnoredLowFeeTicketsRequest) returns (GetIgnoredLowFeeTicketsResponse);
+	rpc GetLiveTickets (GetLiveTicketsRequest) returns (GetLiveTicketsResponse);
+	rpc Ping (PingRequest) returns (PingResponse);
+	rpc SetAddedLowFeeTickets (SetAddedLowFeeTicketsRequest) returns (SetAddedLowFeeTicketsResponse);
+	rpc SetUserVotingPrefs (SetUserVotingPrefsRequest) returns (SetUserVotingPrefsResponse);
+	rpc ImportScript (ImportScriptRequest) returns (ImportScriptResponse);
+}
+
+service VersionService {
+	rpc Version (VersionRequest) returns (VersionResponse);
+}
+
+message GetAddedLowFeeTicketsRequest {}
+message GetAddedLowFeeTicketsResponse {
+	repeated Ticket tickets = 1;
+}
+
+message GetIgnoredLowFeeTicketsRequest {}
+message GetIgnoredLowFeeTicketsResponse {
+	repeated Ticket tickets = 1;
+}
+
+message GetLiveTicketsRequest {}
+message GetLiveTicketsResponse {
+	repeated Ticket tickets = 1;
+}
+
+message PingRequest {}
+message PingResponse {}
+
+message SetAddedLowFeeTicketsRequest {
+	repeated Ticket tickets = 1;
+}
+message SetAddedLowFeeTicketsResponse {
+}
+
+message SetUserVotingPrefsResponse {
+}
+message SetUserVotingPrefsRequest {
+	repeated UserVotingConfigEntry user_voting_config = 1;
+}
+
+message ImportScriptRequest {
+	bytes Script = 1;
+}
+message ImportScriptResponse {
+	int64 HeightImported = 1;
+}
+
+message Ticket {
+	string Address = 1;
+	bytes Hash = 2;
+}
+
+message UserVotingConfigEntry {
+  int64 UserId = 1;
+  string MultiSigAddress = 2;
+  int64 VoteBits = 3;
+  int64 VoteBitsVersion = 4;
+}
+
+message VersionRequest {}
+message VersionResponse {
+	string version_string = 1;
+	uint32 major = 2;
+	uint32 minor = 3;
+	uint32 patch = 4;
+	string prerelease = 5;
+	string build_metadata = 6;
+}

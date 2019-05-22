@@ -1,0 +1,89 @@
+{{define "admin/status"}}
+<section class="site-content">
+	<div class="container container--narrow">
+
+		<div class="row mx-3">
+			<section class="block">
+				
+				<div class="col-12 block__title">
+					<h1 class="d-flex justify-content-between align-items-center">
+						<span>Status</span> <div class="status">RPC Status: {{ .RPCStatus }}</div>
+					</h1>
+				</div>
+
+
+				{{if not .StakepooldInfo}}
+					<div class="snackbar snackbar-error">
+						<div class="snackbar-message">
+							<p>Error retrieving stakepoold info</p>
+						</div>
+					</div>
+				{{else}}
+					<div class="col-12 mb-3 px-0">
+						<div class="table-scroll-y table-responsive text-nowrap">
+							<table class="table" cellspacing="0" width="100%">
+								<thead class="thead-light">
+									<tr>
+										<th scope="col" class="text-center">Stakepoold Number</th>
+										<th scope="col" class="text-center">GRPC Connection Number</th>
+									</tr>
+								</thead>
+								<tbody>
+									{{ range $i, $data := .StakepooldInfo }}
+									<tr class="table-light">
+										<td class="text-center">{{$i}}</td>
+										<td class="text-center">{{ $data.Status }}</td>
+									</tr>
+									{{end}}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				{{end}}
+
+				{{if not .WalletInfo}}
+					<div class="snackbar snackbar-error">
+						<div class="snackbar-message">
+							<p>Error retrieving wallet info</p>
+						</div>
+					</div>
+				{{else}}
+
+				<div class="col-12 px-0">
+					<div class="table-scroll-y table-responsive text-nowrap">
+						<table class="table" cellspacing="0" width="100%">
+							<thead class="thead-light">
+								<tr>
+									<th scope="col" class="text-center">Wallet Number</th>
+									<th scope="col" class="text-center">Connected</th>
+									<th scope="col" class="text-center">DaemonConnected</th>
+									<th scope="col" class="text-center">EnableVoting</th>
+								</tr>
+							</thead>
+							<tbody>
+								{{ range $i, $data := .WalletInfo }}
+								<tr class="table-light">
+									{{ if $data.Connected }}
+										<td class="text-center">{{$i}}</td>
+										<td class="text-center">{{ $data.Connected }}</td>
+										<td class="text-center">{{ $data.DaemonConnected }}</td>
+										<td class="text-center">{{ $data.EnableVoting }}</td> 
+									{{else}}
+										<td class="text-center">{{$i}}</td>
+										<td class="text-center">{{ $data.Connected }}</td>
+										<td class="text-center"></td>
+										<td class="text-center"></td>
+									{{end}}
+								</tr>
+								{{end}}
+							</tbody>
+						</table>
+					</div>
+				</div>
+				{{end}}
+
+			</section>
+		</div>
+	</div>
+</section>
+{{end}}

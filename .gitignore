@@ -1,0 +1,8 @@
+config.toml
+bitumstakepool
+.vendor/
+.vscode/
+controllers/config.go*
+testing/
+*.orig
+debug

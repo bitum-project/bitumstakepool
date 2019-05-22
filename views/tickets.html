@@ -1,0 +1,247 @@
+{{define "tickets"}}
+<section class="site-content">
+	<div class="container container--narrow">
+			<div class="row mx-3">
+
+		{{range .Flash}}
+			<div class="snackbar snackbar-error">
+				<div class="snackbar-message">
+					<p>{{.}}</p>
+				</div>
+			</div>
+		{{end}}
+
+		<section class="block">
+				<div class="col-12 block__title">
+					<h1><span>Ticket Groups</span></h1>
+				</div>
+
+				<div class="col-12 mb-4 px-0">
+					
+					<div class="accordion ticket_accordion">
+						<input id="accordion-control-2" class="accordion-control" type="checkbox" />
+						<label for="accordion-control-2">
+							<div class="accordion__toggle">
+								<div class="d-flex justify-content-between align-items-center">
+									<span><img src="assets/images/group-1119.svg" alt="">Live/Immature</span><div class="arrow-down"></div>
+								</div>
+							</div>
+						</label>
+							<div class="accordion__contents mb-1">
+							{{ range $i, $data := .TicketsLive }}
+							<div>
+								<img src="assets/images/group-1119.svg" alt="">
+								<span>{{printf "%.16s" $data.Ticket}}...</span>
+								<a style="margin-left:50px" href="https://{{$.Network}}.bitumdata.org/tx/{{$data.Ticket}}" rel="noopener noreferrer">Block Explorer</a>
+							</div>
+							{{else}}
+								<div class="accordion__empty">
+									<span>No live/immature tickets</span>
+								</div>
+							{{end}}
+							</div>
+						</div>  
+					
+					<div class="accordion ticket_accordion">
+						<input id="accordion-control-3" class="accordion-control" type="checkbox" />
+						<label for="accordion-control-3">
+							<div class="accordion__toggle">
+								<div class="d-flex justify-content-between align-items-center">
+									<span><img src="assets/images/symbol-8-1.svg" alt="">Voted</span><div class="arrow-down"></div>
+								</div>
+							</div>
+						</label>
+							<div class="accordion__contents mb-1">
+								{{ range $i, $data := .TicketsVoted }}
+								<div>
+									<img src="assets/images/symbol-8-1.svg" alt="">
+									<span>{{printf "%.16s" $data.Ticket}}...</span>
+									<a style="margin-left:50px" href="https://{{$.Network}}.bitumdata.org/tx/{{$data.Ticket}}" rel="noopener noreferrer">Block Explorer</a>
+								</div>
+								{{else}}
+									<div class="accordion__empty">
+										<span>No voted tickets</span>
+									</div>
+								{{end}}
+							</div>
+					</div>  
+					
+					<div class="accordion ticket_accordion">
+						<input id="accordion-control-4" class="accordion-control" type="checkbox" />
+						<label for="accordion-control-4">
+							<div class="accordion__toggle">
+								<div class="d-flex justify-content-between align-items-center">
+									<span><img src="assets/images/symbol-9-1.svg" alt="">Missed</span><div class="arrow-down"></div>
+								</div>
+							</div>
+						</label>
+							<div class="accordion__contents mb-1">
+								{{ range $i, $data := .TicketsMissed }}
+									<div>
+										<img src="assets/images/symbol-9-1.svg" alt="">
+										<span>{{printf "%.16s" $data.Ticket}}...</span>
+										<a style="margin-left:50px" href="https://{{$.Network}}.bitumdata.org/tx/{{$data.Ticket}}" rel="noopener noreferrer">Block Explorer</a>
+									</div>
+								{{else}}
+									<div class="accordion__empty">
+										<span>No missed tickets</span>
+									</div>
+								{{end}}
+							</div>
+					</div>  
+					
+					<div class="accordion ticket_accordion">
+						<input id="accordion-control-5" class="accordion-control" type="checkbox" />
+						<label for="accordion-control-5">
+							<div class="accordion__toggle">
+								<div class="d-flex justify-content-between align-items-center">
+									<span><img src="assets/images/symbol-5-1.svg" alt="">Expired</span><div class="arrow-down"></div>
+								</div>
+							</div>
+						</label>
+							<div class="accordion__contents mb-1">
+								{{ range $i, $data := .TicketsExpired }}
+								<div>
+									<img src="assets/images/symbol-5-1.svg" alt="">
+									<span>{{printf "%.16s" $data.Ticket}}...</span>
+									<a style="margin-left:50px" href="https://{{$.Network}}.bitumdata.org/tx/{{$data.Ticket}}" rel="noopener noreferrer">Block Explorer</a>
+								</div>
+								{{else}}
+									<div class="accordion__empty">
+										<span>No expired tickets</span>
+									</div>
+								{{end}}
+							</div>
+					</div>  
+					
+					<div class="accordion ticket_accordion">
+						<input id="accordion-control-6" class="accordion-control" type="checkbox" />
+						<label for="accordion-control-6">
+							<div class="accordion__toggle">
+								<div class="d-flex justify-content-between align-items-center">
+									<span><img src="assets/images/symbol-5-1-1.svg" alt="">Invalid</span><div class="arrow-down"></div>
+								</div>
+							</div>
+						</label>
+							<div class="accordion__contents mb-1">
+								{{ range $i, $data := .TicketsInvalid }}
+								<div>
+									<img src="assets/images/symbol-5-1-1.svg" alt="">
+									<span>{{printf "%.16s" $data.Ticket}}...</span>
+									<a style="margin-left:50px" href="https://{{$.Network}}.bitumdata.org/tx/{{$data.Ticket}}" rel="noopener noreferrer">Block Explorer</a>
+								</div>
+								{{else}}
+									<div class="accordion__empty">
+										<span>No invalid tickets</span>
+									</div>
+								{{end}}
+							</div>
+							
+					</div>
+				</div>
+			</section>
+
+			<section class="block">
+					<div class="col-12 block__title">
+						<h1 class="d-flex justify-content-between align-items-center"><span>Ticket Information</span> <img class="icon--info" src="assets/images/info-icon.svg" data-toggle="modal" data-target="#connectTicketInfo" alt=""></h1>
+					</div>
+
+				<div class="modal fade" id="connectTicketInfo" tabindex="-1" role="dialog" aria-labelledby="connectTicketInfoTitle" aria-hidden="true">
+					<div class="container container--narrow modal-dialog px-0" role="document">
+						<div class="modal-content px-md-3 py-md-4">
+							<div class="modal-header d-md-flex d-none">
+								<h1 class="modal-title d-flex justify-content-between align-items-center" id="connectSubAddressTitle"><img src="assets/images/info-icon-lg.svg" alt=""><span class="px-3">Buying Tickets with bitumwallet using command-line tools</span></h1>
+								<button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true"><img src="assets/images/close-cross-icon.svg" alt=""></span>
+								</button>
+							</div>
+							<div class="modal-header modal-header--long-title d-md-none d-block mb-3 p-4">
+								<div class="d-flex justify-content-between align-items-start">
+									<button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true"><img src="assets/images/arrow-back--blue.svg" alt=""></span>
+									</button>
+									<h1 class="modal-title" id="connectSubAddressTitle"><img src="assets/images/info-icon-sm.svg" alt=""><span class="pl-1">Buying Tickets with bitumwallet using command-line tools</span></h1>
+								</div>
+							</div>
+							<div class="modal-body mx-3 px-sm-5 px-0">
+								<blockquote class="modal-blockquote"><span>Note!</span> <br>
+								For ease of use, it’s recommended to participate in staking by using the <a href="https://bitum.io/downloads" rel="noopener noreferrer">Bitumiton Wallet &darr;</a><br>
+								For command-line users, in-depth bitumwallet instructions can be founds at <a href="https://docs.bitum.io/getting-started/user-guides/bitumwallet-tickets/" rel="noopener noreferrer">docs.bitum.io.</a><br>
+								Below is a brief introduction for staking the command line environment.</blockquote>
+
+								<p>Your multisignature script for delegating votes has been generated. Please first import it locally into your wallet using bitumctl for safe keeping, so you can recover your funds and vote in the unlikely event of a VSP failure:</p>
+
+								<p>bitumctl{{ if eq .Network "testnet"}} --testnet{{end}} --wallet importscript “script”
+
+								<p>For example:</p>
+
+								<div class="modal-code">
+									<p>
+										$ bitumctl{{ if eq .Network "testnet"}} --testnet{{end}} --wallet importscript {{ .User.MultiSigScript }}
+									</p>
+								</div>
+
+								<p>After successfully importing the script into your wallet, you may purchase tickets with voting rights delegated to the VSP in either of two ways:</p>
+
+								<strong>Option A - bitumwallet - Automatic purchasing</strong>
+
+								<p>Stop bitumwallet if it is currently running and add the following to bitumwallet.conf:</p>
+
+								<div class="modal-code">
+									<p>
+										[Application Options] <br>
+										enableticketbuyer=true <br>
+										pooladdress={{ .User.UserFeeAddr }} <br>
+										poolfees={{ .PoolFees }} <br>
+										;; DEPRECATED -- use ticketbuyer.votingaddress instead <br>
+										;; ticketaddress={{ .User.MultiSigAddress }} <br>
+										[Ticket Buyer Options] <br>
+										ticketbuyer.votingaddress={{ .User.MultiSigAddress }} <br>
+										ticketbuyer.maxpriceabsolute=100
+									</p>
+								</div>
+								
+								<p>Unlock bitumwallet and it will automatically purchase stake tickets delegated to the voting service address.</p>
+
+								<strong>Option B - bitumwallet - Manual purchasing</strong>
+
+								<p>Start a wallet with funds available and manually purchase tickets with the following command using bitumctl:</p>
+
+								<p>bitumctl{{ if eq .Network "testnet"}} --testnet{{end}} --wallet purchaseticket "fromaccount" spendlimit minconf ticketaddress numtickets poolfeeaddress poolfeeamt</p>
+
+								<div class="modal-code">
+									<p>
+										bitumctl{{ if eq .Network "testnet"}} --testnet{{end}} --wallet purchaseticket "default" 100 1 {{ .User.MultiSigAddress }} 1 {{ .User.UserFeeAddr }} {{ .PoolFees}}
+									</p>
+								</div>
+
+								<p>Will purchase a ticket delegated to the the multisig address which allows either your or the VSP to vote when the ticket is called. This uses funds from the default account only if the current network price for a ticket is less than 100.0 coins.</p>
+
+								<strong>Voting</strong>
+
+								<p>If you wish to cast votes yourself, please review the guides
+								<a href="https://docs.bitum.io/getting-started/user-guides/agenda-voting/#how-to-vote" rel="noopener noreferrer">How To Vote</a>
+								and
+								<a href="https://docs.bitum.io/getting-started/user-guides/agenda-voting/#solo-voting" rel="noopener noreferrer">Solo-Voting</a>.
+								The preferences you set on this voting service's <a href="/voting">voting page</a>
+								only affect the stake voting service's voting wallets and not your own.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+					<div class="col-12 mb-4 block__key">
+						<h2>P2SH Address</h2>
+						<p>{{ .User.MultiSigAddress }}</p>
+					</div>
+
+					<div class="col-12 mb-5 block__key">
+						<h2>Redeem Script</h2>
+						<p>{{ .User.MultiSigScript }}</p>
+					</div>
+
+				</section>
+			</div>
+		</div>
+</section>
+{{end}}

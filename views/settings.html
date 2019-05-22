@@ -1,0 +1,86 @@
+{{define "settings"}}
+<section class="site-content">
+
+		<div class="container container--narrow">
+			<div class="row mx-3 justify-content-center">
+				
+				{{range .FlashSuccess}}
+					<div class="snackbar snackbar-success">
+						<div class="snackbar-message">
+							<p>{{.}}</p>
+						</div>
+					</div>
+				{{end}}
+
+				{{range .FlashError}}
+					<div class="snackbar snackbar-error">
+						<div class="snackbar-message">
+							<p>{{.}}</p>
+						</div>
+					</div>
+				{{end}}
+				
+				<section class="block">
+					<div class="col-12 block__title">
+						<h1><span>Change Email Address</span></h1>
+					</div>
+					<div class="w-100 form form--narrow-inputs">
+					{{if .CaptchaDone}}
+						<form method="post" id="ChangeEmail" >
+							<div class="col-12 mb-4">
+								<div class="form-group row mb-0 align-items-center">
+								<label for="inputNewEmail" class="col-md-2 pr-0">New email:</label>
+								<div class="col-md-10">
+									<input type="email" class="form-control" id="inputNewEmail" name="email" placeholder="New email" required>
+								</div>
+								<label for="inputPassword" class="col-md-2 pr-0">Password:</label>
+								<div class="col-md-10">
+									<input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password" required>
+								</div>
+							</div>
+							</div>
+							{{ $.csrfField }}
+							<input type="hidden" name="updateEmail" value="true">
+							<input type="submit" class="btn mb-2" value="Change Email">
+						</form>
+					{{else}} <!-- Render CAPTCHA -->
+						<div class="col-12">
+							{{ template "captcha" . }}
+						</div>
+					{{end}}
+					</div>
+
+				</section>
+			
+			<section class="block">
+					<div class="col-12 block__title">
+						<h1><span>Change Password</span></h1>
+					</div>
+					<form method="post" id="ChangePassword" class="w-100 form form--narrow-inputs">
+						<div class="col-12 mb-4">
+							<div class="form-group row mb-0 align-items-center">
+							<label for="inputCurrentPassword" class="col-md-2 pr-0">Current password:</label>
+							<div class="col-md-10">
+								<input type="password" id="inputCurrentPassword" class="form-control" name="password" placeholder="Current password" required>
+							</div>
+							<label for="inputNewPassword" class="col-md-2 pr-0">New password:</label>
+							<div class="col-md-10">
+								<input type="password" id="inputNewPassword" class="form-control" name="newpassword" placeholder="New password" required>
+							</div>
+							<label for="inputRepeatPassword" class="col-md-2 pr-0">Repeat password:</label>
+							<div class="col-md-10">
+								<input type="password" class="form-control" name="newpasswordrepeat" placeholder="Repeat password" required>
+							</div>
+						</div>
+						</div>
+						{{ $.csrfField }}
+            <input type="hidden" name="updatePassword" value="true">
+						<input type="submit" class="btn mb-2" value="Update Password">
+					</form>
+			</section>
+			</div>
+		</div>
+</section>
+
+{{end}}
+
