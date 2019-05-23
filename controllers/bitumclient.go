@@ -15,7 +15,6 @@ import (
 	"github.com/bitum-project/bitumd/bitumutil"
 	"github.com/bitum-project/bitumd/rpcclient"
 	"github.com/bitum-project/bitumstakepool/models"
-	wallettypes "github.com/bitum-project/bitumwallet/rpc/jsonrpc/types"
 	"github.com/bitum-project/bitumwallet/wallet/udb"
 )
 
@@ -49,7 +48,7 @@ var (
 
 // validateAddressResponse
 type validateAddressResponse struct {
-	addrInfo *wallettypes.ValidateAddressWalletResult
+	addrInfo *bitumjson.ValidateAddressWalletResult
 	err      error
 }
 
@@ -61,7 +60,7 @@ type validateAddressMsg struct {
 
 // createMultisigResponse
 type createMultisigResponse struct {
-	multisigInfo *wallettypes.CreateMultiSigResult
+	multisigInfo *bitumjson.CreateMultiSigResult
 	err          error
 }
 
@@ -74,7 +73,7 @@ type createMultisigMsg struct {
 
 // getStakeInfoResponse
 type getStakeInfoResponse struct {
-	stakeInfo *wallettypes.GetStakeInfoResult
+	stakeInfo *bitumjson.GetStakeInfoResult
 	err       error
 }
 
@@ -85,7 +84,7 @@ type getStakeInfoMsg struct {
 
 // connectedResponse
 type connectedResponse struct {
-	walletInfo []*wallettypes.WalletInfoResult
+	walletInfo []*bitumjson.WalletInfoResult
 	err        error
 }
 
@@ -96,7 +95,7 @@ type connectedMsg struct {
 
 // stakePoolUserInfoResponse
 type stakePoolUserInfoResponse struct {
-	userInfo *wallettypes.StakePoolUserInfoResult
+	userInfo *bitumjson.StakePoolUserInfoResult
 	err      error
 }
 
@@ -175,7 +174,7 @@ func (w *walletSvrManager) executeInSequence(fn functionName, msg interface{}) i
 	case validateAddressFn:
 		vam := msg.(validateAddressMsg)
 		resp := new(validateAddressResponse)
-		vawrs := make([]*wallettypes.ValidateAddressWalletResult, w.serversLen)
+		vawrs := make([]*bitumjson.ValidateAddressWalletResult, w.serversLen)
 		connectCount := 0
 		for i, s := range w.servers {
 			if w.servers[i] == nil {
@@ -228,7 +227,7 @@ func (w *walletSvrManager) executeInSequence(fn functionName, msg interface{}) i
 	case createMultisigFn:
 		cmsm := msg.(createMultisigMsg)
 		resp := new(createMultisigResponse)
-		cmsrs := make([]*wallettypes.CreateMultiSigResult, w.serversLen)
+		cmsrs := make([]*bitumjson.CreateMultiSigResult, w.serversLen)
 		connectCount := 0
 		for i, s := range w.servers {
 			if w.servers[i] == nil {
@@ -280,7 +279,7 @@ func (w *walletSvrManager) executeInSequence(fn functionName, msg interface{}) i
 
 	case getStakeInfoFn:
 		resp := new(getStakeInfoResponse)
-		gsirs := make([]*wallettypes.GetStakeInfoResult, w.serversLen)
+		gsirs := make([]*bitumjson.GetStakeInfoResult, w.serversLen)
 		connectCount := 0
 		for i, s := range w.servers {
 			if w.servers[i] == nil {
@@ -335,7 +334,7 @@ func (w *walletSvrManager) executeInSequence(fn functionName, msg interface{}) i
 	case connectedFn:
 		resp := new(connectedResponse)
 		resp.err = nil
-		wirs := make([]*wallettypes.WalletInfoResult, w.serversLen)
+		wirs := make([]*bitumjson.WalletInfoResult, w.serversLen)
 		resp.walletInfo = wirs
 		connectCount := 0
 		for i, s := range w.servers {
@@ -407,7 +406,7 @@ func (w *walletSvrManager) executeInSequence(fn functionName, msg interface{}) i
 			return resp
 		}
 		// Getting each wallet's response, checking for "syncness"
-		spuirs := make([]*wallettypes.StakePoolUserInfoResult, w.serversLen)
+		spuirs := make([]*bitumjson.StakePoolUserInfoResult, w.serversLen)
 		// use connectCount to increment total number of successful responses
 		// if we have > 0 then we proceed as though nothing is wrong for the user
 		connectCount := 0
@@ -483,7 +482,7 @@ func (w *walletSvrManager) executeInSequence(fn functionName, msg interface{}) i
 
 // ping pings all the servers and makes sure they're online. This should be
 // performed before doing a write.
-func (w *walletSvrManager) connected() ([]*wallettypes.WalletInfoResult, error) {
+func (w *walletSvrManager) connected() ([]*bitumjson.WalletInfoResult, error) {
 	reply := make(chan connectedResponse)
 	w.msgChan <- connectedMsg{
 		reply: reply,
@@ -496,7 +495,7 @@ func (w *walletSvrManager) connected() ([]*wallettypes.WalletInfoResult, error) 
 // PoolTickets need to be synced due to manual addtickets, or a status is off.
 // If a ticket is seen to be valid in 1 wallet and invalid in another, we use
 // addticket rpc command to add that ticket to the invalid wallet.
-func (w *walletSvrManager) syncTickets(spuirs []*wallettypes.StakePoolUserInfoResult) error {
+func (w *walletSvrManager) syncTickets(spuirs []*bitumjson.StakePoolUserInfoResult) error {
 	for i := 0; i < len(spuirs); i++ {
 		if w.servers[i] == nil {
 			continue
@@ -538,7 +537,7 @@ func (w *walletSvrManager) syncTickets(spuirs []*wallettypes.StakePoolUserInfoRe
 // that each share the others PoolTickets and have the same
 // valid/invalid lists.  If any thing is deemed off then syncTickets
 // call is made.
-func (w *walletSvrManager) checkForSyncness(spuirs []*wallettypes.StakePoolUserInfoResult) bool {
+func (w *walletSvrManager) checkForSyncness(spuirs []*bitumjson.StakePoolUserInfoResult) bool {
 	for i := 0; i < len(spuirs); i++ {
 		if spuirs[i] == nil {
 			continue
@@ -604,7 +603,7 @@ func (w *walletSvrManager) checkForSyncness(spuirs []*wallettypes.StakePoolUserI
 //
 // This should return equivalent results from all wallet RPCs. If this
 // encounters a failure, it should be considered fatal.
-func (w *walletSvrManager) ValidateAddress(addr bitumutil.Address) (*wallettypes.ValidateAddressWalletResult, error) {
+func (w *walletSvrManager) ValidateAddress(addr bitumutil.Address) (*bitumjson.ValidateAddressWalletResult, error) {
 	// Assert that all servers are online.
 	_, err := w.connected()
 	if err != nil {
@@ -624,7 +623,7 @@ func (w *walletSvrManager) ValidateAddress(addr bitumutil.Address) (*wallettypes
 //
 // This should return equivalent results from all wallet RPCs. If this
 // encounters a failure, it should be considered fatal.
-func (w *walletSvrManager) CreateMultisig(nreq int, addrs []bitumutil.Address) (*wallettypes.CreateMultiSigResult, error) {
+func (w *walletSvrManager) CreateMultisig(nreq int, addrs []bitumutil.Address) (*bitumjson.CreateMultiSigResult, error) {
 	// Assert that all servers are online.
 	_, err := w.connected()
 	if err != nil {
@@ -646,7 +645,7 @@ func (w *walletSvrManager) CreateMultisig(nreq int, addrs []bitumutil.Address) (
 // This can race depending on what wallet is currently processing, so failures
 // from this function should NOT cause fatal errors on the web server like the
 // other RPC client calls.
-func (w *walletSvrManager) StakePoolUserInfo(userAddr bitumutil.Address, takeFirstResponse bool) (*wallettypes.StakePoolUserInfoResult, error) {
+func (w *walletSvrManager) StakePoolUserInfo(userAddr bitumutil.Address, takeFirstResponse bool) (*bitumjson.StakePoolUserInfoResult, error) {
 	reply := make(chan stakePoolUserInfoResponse)
 	w.msgChan <- stakePoolUserInfoMsg{
 		userAddr:          userAddr,
@@ -676,7 +675,7 @@ func (w *walletSvrManager) GetBestBlock() (*chainhash.Hash, int64, error) {
 // This can race depending on what wallet is currently processing, so failures
 // from this function should NOT cause fatal errors on the web server like the
 // other RPC client calls.
-func (w *walletSvrManager) getStakeInfo() (*wallettypes.GetStakeInfoResult, error) {
+func (w *walletSvrManager) getStakeInfo() (*bitumjson.GetStakeInfoResult, error) {
 	// Less than five minutes has elapsed since the last call. Return
 	// the previously cached stake information.
 	if time.Since(w.cachedStakeInfoTimer) < cacheTimerStakeInfo {
@@ -705,7 +704,7 @@ func (w *walletSvrManager) getStakeInfo() (*wallettypes.GetStakeInfoResult, erro
 }
 
 // GetStakeInfo is the concurrency safe, exported version of getStakeInfo.
-func (w *walletSvrManager) GetStakeInfo() (*wallettypes.GetStakeInfoResult, error) {
+func (w *walletSvrManager) GetStakeInfo() (*bitumjson.GetStakeInfoResult, error) {
 	w.cachedStakeInfoMutex.Lock()
 	defer w.cachedStakeInfoMutex.Unlock()
 
@@ -744,7 +743,7 @@ type walletSvrManager struct {
 	// only queried for if 5 minutes or more has passed. The mutex is used to
 	// allow concurrent access to the stake information if less than five
 	// minutes has passed.
-	cachedStakeInfo      *wallettypes.GetStakeInfoResult
+	cachedStakeInfo      *bitumjson.GetStakeInfoResult
 	cachedStakeInfoTimer time.Time
 	cachedStakeInfoMutex sync.Mutex
 
@@ -834,7 +833,7 @@ func (w *walletSvrManager) CheckWalletsReady() error {
 	return nil
 }
 
-func (w *walletSvrManager) WalletStatus() ([]*wallettypes.WalletInfoResult, error) {
+func (w *walletSvrManager) WalletStatus() ([]*bitumjson.WalletInfoResult, error) {
 	return w.connected()
 }
 

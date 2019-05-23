@@ -13,7 +13,7 @@ import (
 	"github.com/bitum-project/bitumd/chaincfg"
 	"github.com/bitum-project/bitumd/chaincfg/chainhash"
 	"github.com/bitum-project/bitumd/bitumutil"
-	wallettypes "github.com/bitum-project/bitumwallet/rpc/jsonrpc/types"
+	"github.com/bitum-project/bitumd/bitumjson"
 
 	"github.com/bitum-project/bitumd/rpcclient"
 	"github.com/bitum-project/bitumd/wire"
@@ -322,7 +322,7 @@ func (ctx *AppContext) vote(wg *sync.WaitGroup, blockHash *chainhash.Hash, block
 	}()
 
 	// Ask wallet to generate vote result.
-	var res *wallettypes.GenerateVoteResult
+	var res *bitumjson.GenerateVoteResult
 	res, w.err = ctx.WalletConnection.GenerateVote(blockHash, blockHeight,
 		w.ticket, w.config.VoteBits, ctx.VotingConfig.VoteBitsExtended)
 	if w.err != nil || res.Hex == "" {

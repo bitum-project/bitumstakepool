@@ -20,6 +20,7 @@ import (
 	"github.com/bitum-project/bitumd/chaincfg"
 	"github.com/bitum-project/bitumd/chaincfg/chainhash"
 	"github.com/bitum-project/bitumd/bitumutil"
+	"github.com/bitum-project/bitumd/bitumjson"
 	"github.com/bitum-project/bitumd/hdkeychain"
 	"github.com/bitum-project/bitumstakepool/email"
 	"github.com/bitum-project/bitumstakepool/helpers"
@@ -28,7 +29,6 @@ import (
 	"github.com/bitum-project/bitumstakepool/poolapi"
 	"github.com/bitum-project/bitumstakepool/stakepooldclient"
 	"github.com/bitum-project/bitumstakepool/system"
-	wallettypes "github.com/bitum-project/bitumwallet/rpc/jsonrpc/types"
 	"github.com/bitum-project/bitumwallet/wallet/udb"
 	"github.com/go-gorp/gorp"
 	"github.com/gorilla/csrf"
@@ -175,7 +175,7 @@ func NewMainController(params *chaincfg.Params, adminIPs []string,
 // getNetworkName will strip any suffix from a network name starting with
 // "testnet" (e.g. "testnet"). This is primarily intended for the tickets page,
 // which generates block explorer links using a value set by the network string,
-// which is a problem since there is no testnet.bitumdata.org host.
+// which is a problem since there is no testnet.bitum.io host.
 func (controller *MainController) getNetworkName() string {
 	if strings.HasPrefix(controller.params.Name, "testnet") {
 		return "testnet"
@@ -699,7 +699,7 @@ func (controller *MainController) RPCIsStopped() bool {
 }
 
 // WalletStatus returns current WalletInfo from all rpcServers.
-func (controller *MainController) WalletStatus() ([]*wallettypes.WalletInfoResult, error) {
+func (controller *MainController) WalletStatus() ([]*bitumjson.WalletInfoResult, error) {
 	return controller.rpcServers.WalletStatus()
 }
 
