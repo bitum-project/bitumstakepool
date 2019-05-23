@@ -34,11 +34,11 @@ var mainNetParams = params{
 	WalletRPCServerPort:     "9210",
 }
 
-// testNet3Params contains parameters specific to the test network (version 0)
+// testNetParams contains parameters specific to the test network (version 0)
 // (wire.TestNet).  NOTE: The RPC port is intentionally different than the
 // reference implementation - see the mainNetParams comment for details.
 
-var testNet3Params = params{
+var testNetParams = params{
 	Params:                  &chaincfg.TestNetParams,
 	StakepooldRPCServerPort: "19213",
 	WalletRPCServerPort:     "19210",
