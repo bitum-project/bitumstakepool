@@ -36,7 +36,7 @@ var mainNetParams = params{
 	WalletRPCServerPort: "9210",
 }
 
-// testNet3Params contains parameters specific to the test network (version 0)
+// testNetParams contains parameters specific to the test network (version 0)
 // (wire.TestNet).  NOTE: The RPC port is intentionally different than the
 // reference implementation - see the mainNetParams comment for details.
 var testNetParams = params{
