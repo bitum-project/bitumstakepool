@@ -29,7 +29,7 @@ import (
 	"github.com/bitum-project/bitumstakepool/stakepooldclient"
 	"github.com/bitum-project/bitumstakepool/system"
 	wallettypes "github.com/bitum-project/bitumwallet/rpc/jsonrpc/types"
-	"github.com/bitum-project/bitumwallet/wallet/v2/udb"
+	"github.com/bitum-project/bitumwallet/wallet/udb"
 	"github.com/go-gorp/gorp"
 	"github.com/gorilla/csrf"
 	"github.com/zenazn/goji/web"

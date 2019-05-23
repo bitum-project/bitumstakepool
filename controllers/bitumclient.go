@@ -11,12 +11,12 @@ import (
 	"time"
 
 	"github.com/bitum-project/bitumd/chaincfg/chainhash"
-	"github.com/bitum-project/bitumd/bitumjson/v2"
+	"github.com/bitum-project/bitumd/bitumjson"
 	"github.com/bitum-project/bitumd/bitumutil"
-	"github.com/bitum-project/bitumd/rpcclient/v2"
+	"github.com/bitum-project/bitumd/rpcclient"
 	"github.com/bitum-project/bitumstakepool/models"
 	wallettypes "github.com/bitum-project/bitumwallet/rpc/jsonrpc/types"
-	"github.com/bitum-project/bitumwallet/wallet/v2/udb"
+	"github.com/bitum-project/bitumwallet/wallet/udb"
 )
 
 // functionName

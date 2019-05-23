@@ -15,10 +15,10 @@ import (
 	"github.com/bitum-project/bitumd/bitumutil"
 	wallettypes "github.com/bitum-project/bitumwallet/rpc/jsonrpc/types"
 
-	"github.com/bitum-project/bitumd/rpcclient/v2"
+	"github.com/bitum-project/bitumd/rpcclient"
 	"github.com/bitum-project/bitumd/wire"
 	"github.com/bitum-project/bitumstakepool/backend/stakepoold/userdata"
-	"github.com/bitum-project/bitumwallet/wallet/v2/txrules"
+	"github.com/bitum-project/bitumwallet/wallet/txrules"
 )
 
 var (

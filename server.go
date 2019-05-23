@@ -16,7 +16,7 @@ import (
 	"github.com/gorilla/context"
 	"github.com/gorilla/csrf"
 
-	"github.com/bitum-project/bitumd/rpcclient/v2"
+	"github.com/bitum-project/bitumd/rpcclient"
 	"github.com/bitum-project/bitumstakepool/controllers"
 	"github.com/bitum-project/bitumstakepool/email"
 	"github.com/bitum-project/bitumstakepool/stakepooldclient"

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/bitum-project/bitumd/chaincfg/chainhash"
-	"github.com/bitum-project/bitumd/rpcclient/v2"
+	"github.com/bitum-project/bitumd/rpcclient"
 	"github.com/bitum-project/bitumstakepool/backend/stakepoold/rpc/rpcserver"
 )
 
